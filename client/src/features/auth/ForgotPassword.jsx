@@ -6,7 +6,9 @@ const ForgotPassword = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-white to-blue-300">
       <div className="bg-gray-900 text-white p-8 rounded-2xl shadow-xl w-96">
         <h2 className="text-2xl font-bold mb-2 text-center">Reset Password</h2>
-        <p className="text-blue-400 text-center mb-6">Enter your email to reset password</p>
+        <p className="text-blue-400 text-center mb-6">
+          Enter your email to reset password
+        </p>
 
         <div className="mb-4">
           <input

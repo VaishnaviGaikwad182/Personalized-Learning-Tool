@@ -20,9 +20,7 @@ const StudentDashboard = () => {
         const marksRes = await getMyMarks();
         const marks = marksRes.data || [];
 
-        const faMarksArr = marks.filter(m =>
-          m.examType?.startsWith("FA")
-        );
+        const faMarksArr = marks.filter((m) => m.examType?.startsWith("FA"));
 
         const latestFA = faMarksArr.sort((a, b) => {
           const numA = parseInt(a.examType.replace(/\D/g, "")) || 0;
@@ -32,7 +30,7 @@ const StudentDashboard = () => {
 
         setFaMarks(latestFA ? latestFA.marks : "N/A");
 
-        const sa = marks.find(m => m.examType === "SA");
+        const sa = marks.find((m) => m.examType === "SA");
         setSaMarks(sa ? sa.marks : "N/A");
 
         // QUERIES
@@ -41,10 +39,7 @@ const StudentDashboard = () => {
 
         setQueries(qData);
 
-        setPendingQueries(
-          qData.filter(q => q.status !== "resolved").length
-        );
-
+        setPendingQueries(qData.filter((q) => q.status !== "resolved").length);
       } catch (err) {
         setFaMarks("Error");
         setSaMarks("Error");
@@ -61,7 +56,6 @@ const StudentDashboard = () => {
 
       {/* CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-
         <div className="bg-white p-6 rounded-2xl shadow">
           <h3 className="font-semibold mb-2">Latest FA Marks</h3>
           <p className="text-3xl font-bold text-blue-600">{faMarks}</p>
@@ -74,11 +68,8 @@ const StudentDashboard = () => {
 
         <div className="bg-white p-6 rounded-2xl shadow">
           <h3 className="font-semibold mb-2">Pending Queries</h3>
-          <p className="text-3xl font-bold text-red-600">
-            {pendingQueries}
-          </p>
+          <p className="text-3xl font-bold text-red-600">{pendingQueries}</p>
         </div>
-
       </div>
 
       {/* QUERIES SECTION */}
@@ -89,8 +80,7 @@ const StudentDashboard = () => {
           <p>No queries yet.</p>
         ) : (
           <div className="space-y-4">
-
-            {queries.map(q => (
+            {queries.map((q) => (
               <div
                 key={q._id}
                 className="bg-gray-50 p-4 rounded shadow-sm space-y-2"
@@ -100,30 +90,24 @@ const StudentDashboard = () => {
                   Your {q.subject} Query:
                 </p>
 
-                <p className="bg-gray-100 p-2 rounded">
-                  {q.message}
-                </p>
+                <p className="bg-gray-100 p-2 rounded">{q.message}</p>
 
                 {/* RESPONSE */}
                 {q.reply ? (
                   <>
                     <p className="font-semibold text-green-700 mt-2">
-                      {q.subject} {q.teacherId?.name || "Faculty"} Response:
+                      {q.subject} Teacher Response:
                     </p>
 
-                    <p className="bg-green-100 p-2 rounded">
-                      {q.reply}
-                    </p>
+                    <p className="bg-green-100 p-2 rounded">{q.reply}</p>
                   </>
                 ) : (
                   <p className="text-gray-500 italic">
                     Waiting for response...
                   </p>
                 )}
-
               </div>
             ))}
-
           </div>
         )}
       </div>

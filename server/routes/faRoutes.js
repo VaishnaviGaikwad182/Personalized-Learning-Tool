@@ -1,11 +1,10 @@
-const router = require("express").Router();
-const auth = require("../middleware/authMiddleware");
-const { createFA, getMyFA } = require("../controllers/faController");
+const express = require("express");
+const router = express.Router();
+const authMiddleware = require("../middleware/authMiddleware");
+const { createFAMode, getFAModes } = require("../controllers/faController");
 
-// Teacher creates FA
-router.post("/create", auth, createFA);
-
-// Student fetch FA — GET request, no body
-router.get("/my", auth, getMyFA);
+// ✅ Routes
+router.post("/create", authMiddleware, createFAMode);
+router.get("/", authMiddleware, getFAModes);
 
 module.exports = router;

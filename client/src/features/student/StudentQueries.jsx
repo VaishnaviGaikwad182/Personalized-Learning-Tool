@@ -16,7 +16,6 @@ const StudentQueries = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setToken(token);
-
     fetchQueries();
     fetchTeachers();
   }, []);
@@ -37,26 +36,20 @@ const StudentQueries = () => {
       const res = await API.get("/teacher/all");
       setTeachers(res.data);
     } catch (err) {
-      console.log("Teacher fetch error", err.message);
+      console.log(err.message);
     }
   };
 
   const handleSubmit = async () => {
-    if (!subject || !teacherId || !message.trim()) {
+    if (!subject.trim() || !teacherId || !message.trim()) {
       alert("Fill all fields");
       return;
     }
 
     setSubmitting(true);
     try {
-      const res = await createQuery({
-        subject,
-        message,
-        teacherId,
-      });
-
+      const res = await createQuery({ subject, message, teacherId });
       setQueries([res.data, ...queries]);
-
       setSubject("");
       setTeacherId("");
       setMessage("");
@@ -70,28 +63,24 @@ const StudentQueries = () => {
   if (loading) return <p className="p-6">Loading queries...</p>;
 
   return (
-    <div className="p-6 space-y-6">
-      <h2 className="text-2xl font-bold">Queries</h2>
+    <div className="flex-1 flex flex-col overflow-y-auto p-6 space-y-6 bg-gray-100">
+      {/* Heading */}
+      <h2 className="text-3xl font-bold text-gray-800 text-center">
+        Student Queries
+      </h2>
 
-      {/* Raise Query */}
-      <div className="bg-white p-4 shadow rounded space-y-3">
-
-        {/* SUBJECT */}
-        <select
-          className="w-full border p-2 rounded"
+      {/* Raise Query Card */}
+      <div className="bg-white rounded-2xl p-6 shadow-md space-y-4">
+        <input
+          type="text"
+          placeholder="Enter Full Subject Name (e.g., Database Management Systems)"
+          className="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
-        >
-          <option value="">Select Subject</option>
-          <option>DBMS</option>
-          <option>OS</option>
-          <option>CN</option>
-          <option>Maths</option>
-        </select>
+        />
 
-        {/* TEACHER */}
         <select
-          className="w-full border p-2 rounded"
+          className="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg"
           value={teacherId}
           onChange={(e) => setTeacherId(e.target.value)}
         >
@@ -103,21 +92,23 @@ const StudentQueries = () => {
           ))}
         </select>
 
-        {/* MESSAGE */}
         <textarea
-          className="w-full border p-2 rounded"
+          rows="4"
           placeholder="Enter your query..."
+          className="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg resize-none"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        <button
-          onClick={handleSubmit}
-          disabled={submitting}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:opacity-90"
-        >
-          {submitting ? "Submitting..." : "Submit"}
-        </button>
+        <div className="text-center">
+          <button
+            onClick={handleSubmit}
+            disabled={submitting}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+          >
+            {submitting ? "Submitting..." : "Submit Query"}
+          </button>
+        </div>
       </div>
 
       {/* Query Display */}
@@ -125,34 +116,24 @@ const StudentQueries = () => {
         <p>No queries found.</p>
       ) : (
         queries.map((q) => (
-          <div key={q._id} className="bg-white p-4 shadow rounded space-y-2">
-
-            {/* YOUR QUERY */}
+          <div key={q._id} className="bg-white p-5 rounded-xl shadow space-y-2">
             <p className="font-semibold text-blue-700">
-              Your {q.subject} Query:
+              Your {q.subject} Query to {q.teacherName || "Teacher"}:
             </p>
 
-            <p className="bg-gray-100 p-2 rounded">
-              {q.message}
-            </p>
+            <p className="bg-gray-100 p-3 rounded">{q.message}</p>
 
-            {/* TEACHER RESPONSE */}
             {q.reply ? (
               <>
-                <p className="font-semibold text-green-700 mt-3">
-                  {q.subject} {q.teacherId?.name || "Faculty"} Response:
+                <p className="font-semibold text-green-700 mt-2">
+                  Teacher Response:
                 </p>
 
-                <p className="bg-green-100 p-2 rounded">
-                  {q.reply}
-                </p>
+                <p className="bg-green-100 p-3 rounded">{q.reply}</p>
               </>
             ) : (
-              <p className="text-gray-500 italic">
-                Waiting for response...
-              </p>
+              <p className="text-gray-500 italic">Waiting for response...</p>
             )}
-
           </div>
         ))
       )}

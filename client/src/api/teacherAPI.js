@@ -1,39 +1,33 @@
-import axios from "axios";
+import API from "../utils/api";
 
-const API = axios.create({
-  baseURL: "http://localhost:5000/api"
-});
+// =====================
+// Teacher Queries
+// =====================
+export const getClassStats = (filters) =>
+  API.get("/teacher/class-stats", { params: filters });
 
-//////////////////////
-// ✅ FA MODE
-//////////////////////
+export const getClassQueries = (filters) =>
+  API.get("/teacher/class-queries", { params: filters });
 
-export const createFAMode = (data) =>
-  API.post("/fa/create", data);
+export const getTeacherQueries = () =>
+  API.get("/teacher/queries/all");
 
-export const getFAMode = () =>
-  API.get("/fa");
+export const resolveQuery = (queryId, reply) =>
+  API.put(`/teacher/queries/${queryId}/resolve`, { reply });
 
-//////////////////////
-// ✅ MARKS
-//////////////////////
+// =====================
+// FA Mode
+// =====================
+export const createFAMode = (data) => API.post("/fa/create", data);
+export const getFAModes = () => API.get("/fa");
 
-export const uploadMarks = (data) =>
-  API.post("/marks/upload", data);
 
-//////////////////////
-// ✅ QUERIES
-//////////////////////
+// =====================
+// Marks
+// =====================
+export const uploadMarks = (data) => API.post("/marks/upload", data);
 
-export const getClassQueries = () =>
-  API.get("/queries/all");
-
-export const resolveQuery = (id) =>
-  API.put(`/queries/${id}/resolve`);
-
-//////////////////////
-// ✅ DASHBOARD STATS
-//////////////////////
-
-export const getClassStats = () =>
-  API.get("/teacher/stats");
+// =====================
+// Teachers List
+// =====================
+export const getAllTeachers = () => API.get("/teacher/all");

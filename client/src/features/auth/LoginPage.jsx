@@ -26,9 +26,7 @@ const LoginPage = () => {
 
       // Check if user role matches page role
       if (role.toLowerCase() !== data.user.role) {
-        alert(
-          `This is a ${role} login page. Please enter valid credentials.`,
-        );
+        alert(`This is a ${role} login page. Please enter valid credentials.`);
         setLoading(false);
         return;
       }

@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   ClipboardList,
-  HelpCircle,
+  MessageSquare,
   Upload,
   FileText,
   PanelLeftClose,
@@ -70,22 +70,6 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         </NavLink>
 
         <NavLink
-          to="/teacher/queries"
-          className={({ isActive }) =>
-            `flex items-center gap-4 px-4 py-3 rounded-lg mx-2
-            transition-all
-            ${
-              isActive
-                ? "bg-blue-600 text-white"
-                : "hover:bg-gray-800 text-gray-300"
-            }`
-          }
-        >
-          <HelpCircle size={20} />
-          {!collapsed && <span>Queries</span>}
-        </NavLink>
-
-        <NavLink
           to="/teacher/submission-status"
           className={({ isActive }) =>
             `flex items-center gap-4 px-4 py-3 rounded-lg mx-2
@@ -99,6 +83,22 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         >
           <FileText size={20} />
           {!collapsed && <span>Submissions</span>}
+        </NavLink>
+
+        <NavLink
+          to="/teacher/queries"
+          className={({ isActive }) =>
+            `flex items-center gap-4 px-4 py-3 rounded-lg mx-2
+            transition-all
+            ${
+              isActive
+                ? "bg-blue-600 text-white"
+                : "hover:bg-gray-800 text-gray-300"
+            }`
+          }
+        >
+          <MessageSquare size={20} />
+          {!collapsed && <span>Queries</span>}
         </NavLink>
 
         <NavLink

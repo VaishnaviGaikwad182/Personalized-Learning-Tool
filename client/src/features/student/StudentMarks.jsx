@@ -24,7 +24,10 @@ const StudentMarks = () => {
 
         setMarks(grouped);
       } catch (err) {
-        console.error("Error fetching marks:", err.response?.data?.msg || err.message);
+        console.error(
+          "Error fetching marks:",
+          err.response?.data?.msg || err.message,
+        );
       } finally {
         setLoading(false);
       }

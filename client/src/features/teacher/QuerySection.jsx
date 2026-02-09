@@ -7,18 +7,29 @@ const QuerySection = ({ filters }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!filters.department || !filters.subject || !filters.division || !filters.year) return;
+    if (
+      !filters.department ||
+      !filters.subject ||
+      !filters.division ||
+      !filters.year
+    )
+      return;
 
     const token = localStorage.getItem("token");
-    setToken(token); 
+    if (!token) return;
+
+    setToken(token);
 
     const fetchQueries = async () => {
       setLoading(true);
       try {
         const res = await getClassQueries(filters);
-        setQueries(res.data); 
+        setQueries(res.data);
       } catch (err) {
-        console.log("Error fetching class queries:", err.response?.data?.msg || err.message);
+        console.log(
+          "Error fetching class queries:",
+          err.response?.data?.msg || err.message,
+        );
       } finally {
         setLoading(false);
       }
@@ -28,22 +39,41 @@ const QuerySection = ({ filters }) => {
   }, [filters]);
 
   return (
-    <div className="bg-white shadow-md p-6 rounded-2xl h-100 overflow-y-auto">
-      <h2 className="text-xl font-semibold mb-2">Queries / Notifications</h2>
+    <div className="bg-white shadow-md p-6 rounded-2xl h-full overflow-y-auto">
+      <h2 className="text-xl font-bold mb-4">Class Queries / Notifications</h2>
 
       {loading ? (
         <p>Loading queries...</p>
       ) : queries.length === 0 ? (
         <p>No queries found for this class.</p>
       ) : (
-        <ul className="space-y-2">
+        <div className="space-y-4">
           {queries.map((q) => (
-            <li key={q._id} className="bg-gray-100 p-2 rounded">
-              <p><strong>{q.studentName}:</strong> {q.message}</p>
-              {q.reply && <p className="text-sm text-gray-600 mt-1">Teacher: {q.reply}</p>}
-            </li>
+            <div
+              key={q._id}
+              className="bg-gray-50 p-4 rounded-2xl shadow-sm space-y-2"
+            >
+              {/* STUDENT QUERY */}
+              <p className="font-semibold text-blue-700">
+                {q.studentId?.name || "Student"}: {q.subject} Query
+              </p>
+
+              <p className="bg-gray-100 p-3 rounded">{q.message}</p>
+
+              {/* TEACHER RESPONSE */}
+              {q.reply ? (
+                <>
+                  <p className="font-semibold text-green-700 mt-2">
+                    Your Response:
+                  </p>
+                  <p className="bg-green-100 p-3 rounded">{q.reply}</p>
+                </>
+              ) : (
+                <p className="text-gray-500 italic">Waiting for response...</p>
+              )}
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

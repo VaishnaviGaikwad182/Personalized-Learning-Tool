@@ -68,26 +68,32 @@ const Dashboard = () => {
             onChange={(e) =>
               setFilters({ ...filters, subject: e.target.value })
             }
-            placeholder="Enter Subject"
-            className="p-3 border rounded-lg bg-gray-100"
+            placeholder="Enter Full Subject Name (e.g., Database Management Systems)"
+            className="p-3 bg-gray-100 border border-gray-300 rounded-lg"
           />
 
-          <input
-            type="text"
+          <select
             value={filters.division}
             onChange={(e) =>
               setFilters({ ...filters, division: e.target.value })
             }
-            placeholder="Enter Division"
-            className="p-3 border rounded-lg bg-gray-100"
-          />
+            className="p-3 bg-gray-100 border border-gray-300 rounded-lg">
+            <option value="">Select Division</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="G">G</option>
+          </select>
 
           <select
             value={filters.department}
             onChange={(e) =>
               setFilters({ ...filters, department: e.target.value })
             }
-            className="p-3 border rounded-lg bg-gray-100"
+            className="p-3 bg-gray-100 border border-gray-300 rounded-lg"
           >
             <option value="">Select Department</option>
             <option value="FE">Applied Science and Humanities</option>
@@ -104,7 +110,7 @@ const Dashboard = () => {
             onChange={(e) =>
               setFilters({ ...filters, year: e.target.value })
             }
-            className="p-3 border rounded-lg bg-gray-100"
+            className="p-3 bg-gray-100 border border-gray-300 rounded-lg"
           >
             <option value="">Select Year</option>
             <option value="FE">First Year</option>
@@ -125,7 +131,7 @@ const Dashboard = () => {
       {/* Stats Section */}
       {allSelected && (
         <div className="bg-white rounded-2xl p-6 shadow-md">
-          <h2 className="text-xl font-bold mb-4">📊 Overall Class Stats</h2>
+          <h2 className="text-xl font-bold mb-4">Overall Class Stats</h2>
 
           {loadingStats ? (
             <p>Loading stats...</p>

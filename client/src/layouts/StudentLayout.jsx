@@ -4,6 +4,8 @@ import StudentSidebar from "../features/student/StudentSidebar";
 import StudentDashboard from "../features/student/StudentDashboard";
 import StudentMarks from "../features/student/StudentMarks";
 import StudentQueries from "../features/student/StudentQueries";
+import StudentFASubmission from "../features/student/StudentFASubmission";
+
 
 const StudentLayout = () => {
   const [open, setOpen] = useState(true);
@@ -17,6 +19,7 @@ const StudentLayout = () => {
           <Route path="dashboard" element={<StudentDashboard />} />
           <Route path="marks" element={<StudentMarks />} />
           <Route path="queries" element={<StudentQueries />} />
+          <Route path="fa-submit" element={<StudentFASubmission />} />
         </Routes>
       </div>
     </div>

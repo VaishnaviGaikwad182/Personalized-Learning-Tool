@@ -1,48 +1,42 @@
 const FAMode = require("../models/FAMode");
-const User = require("../models/User");
 
-// Teacher creates FA mode
-exports.createFA = async (req, res) => {
+// ✅ Create FA Mode (Teacher)
+exports.createFAMode = async (req, res) => {
   try {
-    if (req.user.role !== "teacher")
-      return res.status(403).json({ msg: "Only teachers allowed" });
+    const { branch, div, year, subject, faType, mode, deadline } = req.body;
 
-    const { year, branch, subject, faType } = req.body;
+    // Validate all required fields
+    if (!branch || !div || !year || !subject || !faType || !mode || !deadline) {
+      return res.status(400).json({ msg: "All fields required" });
+    }
 
-    if (!year || !branch || !subject || !faType)
-      return res.status(400).json({ msg: "All fields are required" });
-
-    const fa = await FAMode.create({
-      year: Number(year),
-      branch: branch.trim(),
-      subject: subject.trim(),
-      faType: faType.trim(),
-      teacherId: req.user.id
+    const newFAMode = new FAMode({
+      branch,
+      division: div,
+      year,
+      subject,
+      faType,
+      mode,
+      deadline,
+      teacherId: req.user.id,
+      isActive: true,
     });
 
-    res.json(fa);
+    await newFAMode.save();
+    res.status(201).json({ msg: "FA Mode created successfully", faMode: newFAMode });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ msg: err.message });
   }
 };
 
-// Student fetch FA — GET request, NO body
-exports.getMyFA = async (req, res) => {
+// ✅ Get all FA Modes (Teacher)
+exports.getFAModes = async (req, res) => {
   try {
-    if (req.user.role !== "student")
-      return res.status(403).json({ msg: "Only students allowed" });
-
-    const student = await User.findById(req.user.id);
-    if (!student) return res.status(404).json({ msg: "Student not found" });
-
-    const fa = await FAMode.find({
-      year: Number(student.year),
-      branch: student.branch.trim(),
-      isActive: true
-    });
-
-    res.json(fa);
+    const faModes = await FAMode.find({ teacherId: req.user.id });
+    res.json(faModes);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ msg: err.message });
   }
 };
